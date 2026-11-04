@@ -4,93 +4,119 @@ Servidor MCP (Model Context Protocol) para automação remota via SSH e SFTP com
 
 ---
 
-## 💡 Dúvidas Frequentes & Como Funciona a Configuração
+## 🏁 Tutorial Rápido: O que fazer após clonar no Windows? (Passo a Passo)
 
-### ❓ "Acabei de clonar o repositório, por que não tem o arquivo de servidores (`servers-config.enc.json`)?"
-Por **design de segurança absoluto**, o arquivo de servidores **nunca** é enviado para o Git:
-* Ele contém (de forma criptografada em AES-256-GCM) os IPs, usuários, senhas ou chaves privadas dos servidores do autor.
-* Cada usuário ou máquina deve ter o seu próprio cofre isolado com a sua própria senha mestra.
-* O cofre é gerado localmente pelo próprio agente de IA na primeira utilização, conforme o guia passo a passo abaixo.
+Se você acabou de clonar este repositório para o seu Windows, siga estes 4 passos simples:
+
+```mermaid
+flowchart LR
+    A["1. Pré-requisito: Node.js >= 18"] --> B["2. Instalar dependências (setup.bat)"]
+    B --> C["3. Vincular no Antigravity/VS Code"]
+    C --> D["4. Usar no Chat!"]
+```
+
+### Passo 1: Verificar se tem o Node.js instalado
+Abra o PowerShell ou Prompt de Comando e digite:
+```powershell
+node -v
+```
+* Deve exibir `v18.x.x`, `v20.x.x`, `v22.x.x` ou superior.
+* Se der comando não encontrado, baixe e instale a versão LTS oficial em: **[https://nodejs.org/](https://nodejs.org/)** *(marque a opção de adicionar ao PATH durante a instalação)*.
 
 ---
 
-## 🛠️ Guia Passo a Passo: Gerenciando seus Servidores
+### Passo 2: Instalar as dependências do projeto
 
-Você **não precisa editar nenhum arquivo JSON manualmente** (inclusive eles são criptografados). Todo o ciclo de vida dos seus servidores é feito conversando normalmente com o agente de IA no chat do Antigravity/VS Code.
+Você tem duas formas simples:
 
-### 1️⃣ Primeiro Acesso: Inicializar o Cofre (Setup Único)
-Na primeira vez que você for usar o MCP nesta máquina, o cofre precisa ser criado com uma senha mestra:
-* **No Chat com o Agente:**
-  > *"Por favor, inicialize o cofre SSH com a minha senha mestra [SuaSenhaSuperSegura123]"*
-* **O que o agente executa nos bastidores:**
-  Tool `vault_init`:
-  ```json
-  { "masterPassword": "SuaSenhaSuperSegura123" }
+* **Opção A (Automática com 2 cliques):**
+  Dê um duplo clique no arquivo **`setup.bat`** na pasta do projeto. Ele verifica o Node, instala tudo automaticamente e roda os testes de segurança para confirmar que está tudo 100%.
+
+* **Opção B (Pelo terminal):**
+  Abra o terminal na pasta do projeto e execute:
+  ```powershell
+  npm install
+  npm test
   ```
-  *(Isso gera localmente na máquina os arquivos protegidos `crypto-config.json` e `servers-config.enc.json`)*.
+  *(Os testes devem finalizar com `🎉 TODOS OS 45 TESTES PASSARAM COM SUCESSO!`)*.
 
 ---
 
-### 2️⃣ Como Adicionar Novos Servidores
-Para cadastrar uma nova máquina (seja com usuário/senha ou chave SSH PEM):
-* **No Chat com o Agente:**
-  > *"Adicione ao meu cofre SSH o servidor 'web-prod' no IP 192.168.1.50, porta 22, usuário deploy, senha [SenhaDoSSH], descrição 'Servidor Nginx Principal'. A senha mestra do cofre é [SuaSenhaSuperSegura123]."*
-* **O que o agente executa:**
-  Tool `vault_add_server`:
-  ```json
-  {
-    "masterPassword": "SuaSenhaSuperSegura123",
-    "name": "web-prod",
-    "host": "192.168.1.50",
-    "port": 22,
-    "username": "deploy",
-    "password": "SenhaDoSSH",
-    "description": "Servidor Nginx Principal"
+### Passo 3: Cadastrar o MCP no seu Antigravity, VS Code ou Claude Desktop
+
+Agora informe ao seu aplicativo de IA onde está o servidor MCP.
+
+#### 🔹 No Google Antigravity:
+1. Abra as configurações do Antigravity (ou menu MCP).
+2. Adicione a configuração:
+```json
+{
+  "mcpServers": {
+    "ssh-vault": {
+      "command": "node",
+      "args": ["C:/caminho/para/mcp-ssh-server-antigravity/src/index.js"]
+    }
   }
-  ```
+}
+```
+*(Substitua `C:/caminho/para/...` pelo caminho real da pasta onde você clonou no seu Windows. Dica: use barras normais `/` ou barras duplas `\\` no JSON).*
 
----
-
-### 3️⃣ Como Editar / Atualizar um Servidor Existente
-Precisa mudar a senha de um servidor, trocar a porta ou apontar para um novo IP?
-* **O processo é idêntico à adição:** Basta pedir para atualizar usando o **mesmo nome** (`name`):
-* **No Chat com o Agente:**
-  > *"Atualize o servidor 'web-prod': altere a porta para 2222 e o usuário para admin. A senha mestra é [SuaSenhaSuperSegura123]."*
-* **O que o agente executa:**
-  Tool `vault_add_server` (com o mesmo `name: "web-prod"`). O cofre reconhece o nome e substitui a configuração antiga de forma atômica.
-
----
-
-### 4️⃣ Como Deletar um Servidor do Cofre
-Quando desativar uma máquina e quiser expurgar do cofre:
-* **No Chat com o Agente:**
-  > *"Remova o servidor 'web-prod' do meu cofre SSH. A senha mestra é [SuaSenhaSuperSegura123]."*
-* **O que o agente executa:**
-  Tool `vault_remove_server`:
-  ```json
-  {
-    "masterPassword": "SuaSenhaSuperSegura123",
-    "name": "web-prod"
+#### 🔹 No VS Code (extensões Cline / Roo Code / Roo-Cline):
+No arquivo de configuração MCP da extensão (`cline_mcp_settings.json`):
+```json
+{
+  "mcpServers": {
+    "ssh-vault": {
+      "command": "node",
+      "args": ["C:\\caminho\\para\\mcp-ssh-server-antigravity\\src\\index.js"]
+    }
   }
-  ```
+}
+```
+
+#### 🔹 No Claude Desktop:
+No menu `Settings` > `Developer` > `Edit Config` (`claude_desktop_config.json`), adicione o bloco acima.
 
 ---
 
-### 5️⃣ Consultar Servidores Cadastrados
-A qualquer momento você pode listar quais máquinas estão cadastradas:
-* **No Chat com o Agente:**
-  > *"Quais servidores estão cadastrados no meu cofre SSH?"*
-* **O que o agente executa:**
-  Tool `vault_status`. Ela retorna a lista sanitizada (apenas nomes, hosts, portas e tipo de autenticação), **nunca expondo senhas ou chaves privadas**.
+### Passo 4: Pronto! Como usar diretamente no Chat com o Agente
+
+Reinicie o Antigravity / VS Code / Claude. Agora o agente já possui as ferramentas SSH. Veja como conversar com ele:
+
+#### A. Inicializar seu cofre pela primeira vez:
+> *"Por favor, inicialize meu cofre SSH com a senha mestra [SuaSenhaSuperSegura123]"*
+
+#### B. Cadastrar seu servidor:
+> *"Cadastre meu servidor 'web-prod' no cofre: host 192.168.1.100, porta 22, usuário deploy, senha [SenhaDoSSH]. Minha senha mestra é [SuaSenhaSuperSegura123]"*
+
+#### C. Executar comandos:
+> *"Execute `uptime` e `df -h` no servidor 'web-prod'"*
 
 ---
 
-### 6️⃣ Desbloquear nas Sessões Diárias
-Ao reabrir o Antigravity / VS Code em um novo dia de trabalho:
-* **No Chat com o Agente:**
-  > *"Desbloqueie meu cofre SSH com a senha [SuaSenhaSuperSegura123]"*
-* **O que o agente executa:**
-  Tool `vault_unlock`. Os dados são decifrados **apenas para a memória RAM** da sessão ativa, garantindo que nada fique descriptografado em disco.
+## 💡 Dúvidas Frequentes sobre Configurações
+
+### ❓ "Por que não tem o arquivo de servidores (`servers-config.enc.json`) no repositório?"
+Por **design de segurança absoluto**:
+* O arquivo guardaria seus IPs, usuários, senhas ou chaves SSH privadas.
+* Ele é mantido fora do Git (no `.gitignore`) para **proteger suas credenciais**.
+* Ao rodar pela primeira vez e chamar `vault_init`, o MCP cria esse arquivo **localmente** no seu disco de forma criptografada em AES-256-GCM.
+* Se quiser ver os campos aceitos em cada servidor, consulte o arquivo template [`config.example.json`](config.example.json).
+
+---
+
+## 🛠️ Gerenciando seus Servidores no Dia a Dia
+
+Você **nunca precisa editar nenhum JSON manualmente**. Faça tudo pelo chat:
+
+| Ação | O que pedir no chat | Tool chamada |
+| :--- | :--- | :--- |
+| **Inicializar cofre** | *"Inicialize meu cofre com a senha mestra X"* | `vault_init` |
+| **Adicionar servidor** | *"Adicione o servidor nome, host, user, senha ou chave PEM com a senha mestra X"* | `vault_add_server` |
+| **Editar servidor** | *"Atualize o servidor nome: mude a porta para 2222 com a senha mestra X"* *(basta manter o mesmo nome)* | `vault_add_server` |
+| **Remover servidor** | *"Remova o servidor nome com a senha mestra X"* | `vault_remove_server` |
+| **Consultar lista** | *"Quais servidores tenho cadastrados?"* | `vault_status` |
+| **Desbloquear sessão** | *"Desbloqueie o cofre com a senha mestra X"* | `vault_unlock` |
 
 ---
 
@@ -98,39 +124,15 @@ Ao reabrir o Antigravity / VS Code em um novo dia de trabalho:
 
 1. **Criptografia Militar (AES-256-GCM + PBKDF2)**:
    * 100.000 iterações de SHA-512 com Salt randômico de 32 bytes e autenticação de integridade por Auth Tag.
-   * Chave derivada mantida **estritamente em memória RAM**.
+   * Chave derivada mantida **estritamente em memória RAM** durante a sessão.
 2. **Denylist de Comandos Destrutivos**:
-   * O MCP bloqueia automaticamente comandos catastróficos acidentais do LLM: `rm -rf /`, `mkfs`, `dd of=/dev/`, `reboot`, `shutdown`, fork-bombs.
+   * O MCP bloqueia automaticamente comandos acidentais ou perigosos do LLM: `rm -rf /`, `mkfs`, `dd of=/dev/`, `reboot`, `shutdown`, fork-bombs.
 3. **Bloqueio de Comandos Interativos**:
    * Comandos como `top`, `vim`, `less`, `sudo` interativo são rejeitados de imediato para evitar travamento da sessão.
 4. **Proteção Anti-Prompt Injection**:
    * Qualquer saída remota (`stdout`/`stderr`) é encapsulada com avisos de integridade e truncada em 512KB para evitar ataques de injeção e estouro de contexto.
 5. **Reuso Eficiente (Connection Pool)**:
    * Sessões SSH são mantidas em cache durante comandos sequenciais com auto-fechamento após 60s de inatividade.
-
----
-
-## 📦 Instalação & Setup no MCP Host
-
-### 1. Clonar e Instalar Dependências
-```bash
-git clone https://github.com/igorpaiva26/mcp-ssh-server-antigravity.git
-cd mcp-ssh-server-antigravity
-npm install
-```
-
-### 2. Configurar no Antigravity ou VS Code / Claude Desktop
-No seu arquivo de configuração MCP (ex: `mcp_settings.json` ou similar):
-```json
-{
-  "mcpServers": {
-    "ssh": {
-      "command": "node",
-      "args": ["C:/caminho/completo/mcp-ssh-server-antigravity/src/index.js"]
-    }
-  }
-}
-```
 
 ---
 
