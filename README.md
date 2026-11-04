@@ -45,6 +45,37 @@ Converse normalmente com o agente para gerenciar seus servidores:
 
 ---
 
+## 💡 Dica de Ouro: Potencialize o MCP SSH com as Skills do Antigravity!
+
+Se você utiliza o **Google Antigravity**, você pode elevar o poder deste servidor MCP combinando-o com as **Skills Operacionais**.
+
+Quando você ensina rotinas específicas para o agente através de arquivos `SKILL.md`, ele passa a executar comandos SSH de forma muito mais inteligente, segura e contextual, sabendo exatamente o que fazer sem que você precise ditar comando por comando.
+
+### 🌟 Exemplos de Skills Prontas para o Dia a Dia:
+
+1. **`ssh-safety-guard` (Segurança, Backups & Rollback Automático)**:
+   * Antes de alterar qualquer arquivo de configuração remoto, o agente automaticamente cria uma cópia de backup com data/hora (`arquivo.conf.bak_YYYYMMDD_HHMMSS`).
+   * Já deixa pronto o plano de reversão imediata (rollback) caso o serviço falhe após a alteração.
+   * Evita toques acidentais em caminhos críticos como `/etc/shadow`, `/boot/`, ou dados de banco sem dump.
+
+2. **`nginx-ops` (Diagnóstico e Operação Nginx)**:
+   * Identifica na hora a causa de erros `502 Bad Gateway` checando portas upstream (`Node`, `Java`, `PHP`, `Python`).
+   * Faz análise direcionada dos últimos erros críticos nos logs (`/var/log/nginx/error.log`).
+   * **Nunca reinicia o Nginx** sem rodar previamente o comando `nginx -t` para validar a sintaxe dos arquivos.
+
+3. **`jboss-wildfly-ops` (Diagnóstico Java & Deploys)**:
+   * Gerencia deploys `.war` / `.ear` monitorando os gatilhos `.dodeploy`, `.deployed` e inspecionando o stacktrace em `.failed`.
+   * Vasculha logs da JVM atrás de gargalos comuns como `OutOfMemoryError` ou pools de conexão de banco esgotados.
+
+### 🚀 Como ativar essas Skills no seu Antigravity?
+Basta colar a seguinte mensagem no chat com o seu Antigravity:
+
+> 💬 *"Com base no arquivo `LEMBRETE_SKILLS_CORPORATIVO.md` deste repositório, configure para mim as skills operacionais `ssh-safety-guard`, `nginx-ops` e `jboss-wildfly-ops` na minha pasta global de skills do Antigravity."*
+
+O Antigravity salvará as skills na sua pasta global e, a partir desse momento, **toda intervenção remota via MCP SSH seguirá automaticamente essas boas práticas de DevOps e produção!**
+
+---
+
 ## 🔒 Arquitetura de Segurança Transparente
 
 * **Privacidade Absoluta**: Nenhuma senha, IP ou credencial sua é versionada no Git.
