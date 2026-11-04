@@ -1,13 +1,16 @@
-# === Segredos e chaves (NUNCA versionar) ===
+# === Segredos, chaves e arquivos locais (NUNCA versionar) ===
 .vault-runtime.key
 servers-config.enc.json
 crypto-config.json
 .keys/
 
+# === Ambiente de teste / Mock local (gerado dinamicamente) ===
+mock_remote_root/
+
 # === Dependências ===
 node_modules/
 
-# === Testes (artefatos gerados) ===
+# === Testes (artefatos temporários gerados na execução) ===
 test/test-crypto-config.json
 test/test-servers-config.enc.json
 test/test-runtime.key
