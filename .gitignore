@@ -1,0 +1,21 @@
+# === Segredos e chaves (NUNCA versionar) ===
+.vault-runtime.key
+servers-config.enc.json
+crypto-config.json
+.keys/
+
+# === Dependências ===
+node_modules/
+
+# === Testes (artefatos gerados) ===
+test/test-crypto-config.json
+test/test-servers-config.enc.json
+test/test-runtime.key
+
+# === SO / IDE ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

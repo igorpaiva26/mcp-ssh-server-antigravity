@@ -1,0 +1,25 @@
+{
+  "name": "mcp-ssh-server",
+  "version": "1.0.0",
+  "description": "Secure SSH MCP Server with encrypted credentials vault and mock server",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "mock": "node src/mock-server.js",
+    "test": "node test/test-suite.js"
+  },
+  "keywords": [
+    "mcp",
+    "ssh",
+    "vault",
+    "security"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "ssh2": "^1.17.0"
+  }
+}

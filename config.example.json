@@ -1,0 +1,22 @@
+{
+  "_INSTRUCOES": "Este é um EXEMPLO. NÃO coloque credenciais reais aqui. Use as tools vault_init + vault_add_server para cadastrar servidores de forma segura.",
+  "exemplos_de_servidores": [
+    {
+      "name": "meu-servidor-dev",
+      "host": "192.168.1.100",
+      "port": 22,
+      "username": "deploy",
+      "password": "(use vault_add_server para definir a senha de forma segura)",
+      "description": "Servidor de desenvolvimento"
+    },
+    {
+      "name": "meu-servidor-prod",
+      "host": "10.0.0.50",
+      "port": 22,
+      "username": "appuser",
+      "privateKey": "(cole a chave PEM via vault_add_server)",
+      "passphrase": "(se a chave for protegida por passphrase)",
+      "description": "Servidor de produção (somente leitura recomendado)"
+    }
+  ]
+}

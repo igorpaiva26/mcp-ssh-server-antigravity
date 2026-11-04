@@ -1,0 +1,1 @@
+Bem-vindo ao servidor SSH Mock para testes do MCP Server!
