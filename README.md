@@ -112,3 +112,11 @@ O Antigravity salvará as skills na sua pasta global e, a partir desse momento, 
 * **Trava contra Desastres**: Comandos destrutivos acidentais como `rm -rf /`, `mkfs`, `dd of=/dev/`, `reboot` e `shutdown` são bloqueados na raiz pelo MCP.
 * **Sem Travamentos**: Comandos interativos (`top`, `vim`, `less`, `sudo` com prompt) são interceptados com orientações não-interativas.
 * **Proteção contra Prompt Injection**: Saídas de servidores remotos são encapsuladas e truncadas em 512KB para proteger o contexto do LLM.
+
+---
+
+## 👤 Autor
+
+Desenvolvido por **[Igor Paiva](https://github.com/igorpaiva26)**.  
+*Servidor MCP de infraestrutura e automação remota segura projetado para agentes de Inteligência Artificial.*
+
