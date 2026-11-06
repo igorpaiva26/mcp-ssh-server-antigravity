@@ -62,6 +62,10 @@ export function startMockServer(port = 2222) {
     const server = new Server({
       hostKeys: [hostPrivateKey]
     }, (client) => {
+      client.on('error', (err) => {
+        // Ignora ECONNRESET / desconexões abruptas de clientes sem quebrar o servidor
+      });
+
       client.on('authentication', (ctx) => {
         if (ctx.method === 'password') {
           // Permite mockuser/mockpass ou admin/admin123
@@ -83,7 +87,46 @@ export function startMockServer(port = 2222) {
             const cmd = info.command.trim();
 
             if (cmd === 'uptime') {
-              stream.write(' 22:35:00 up 10 days, 2 users, load average: 0.05, 0.03, 0.00\r\n');
+              stream.write(' 12:45:00 up 45 days, 3 users, load average: 0.12, 0.08, 0.05\r\n');
+              stream.exit(0);
+              stream.end();
+            } else if (cmd.startsWith('df') || cmd === 'df -h') {
+              stream.write(
+                'Filesystem      Size  Used Avail Use% Mounted on\r\n' +
+                '/dev/sda1        50G   18G   30G  38% /\r\n' +
+                '/dev/sdb1       200G   45G  145G  24% /var/log\r\n' +
+                'tmpfs           7.8G     0  7.8G   0% /dev/shm\r\n'
+              );
+              stream.exit(0);
+              stream.end();
+            } else if (cmd.startsWith('free') || cmd === 'free -m' || cmd === 'free -h') {
+              stream.write(
+                '               total        used        free      shared  buff/cache   available\r\n' +
+                'Mem:           15.6G        4.2G        8.1G        240M        3.3G       10.9G\r\n' +
+                'Swap:           4.0G        120M        3.9G\r\n'
+              );
+              stream.exit(0);
+              stream.end();
+            } else if (cmd.includes('systemctl status') || cmd.includes('service status')) {
+              stream.write(
+                '● nginx.service - A high performance web server and a reverse proxy server\r\n' +
+                '     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)\r\n' +
+                '     Active: active (running) since Wed 2026-10-15 08:30:12 UTC; 22 days ago\r\n' +
+                '   Main PID: 1420 (nginx)\r\n' +
+                '      Tasks: 5 (limit: 19000)\r\n' +
+                '     Memory: 64.2M\r\n' +
+                '     CGroup: /system.slice/nginx.service\r\n' +
+                '             ├─1420 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"\r\n' +
+                '             └─1421 "nginx: worker process"\r\n'
+              );
+              stream.exit(0);
+              stream.end();
+            } else if (cmd.includes('docker ps')) {
+              stream.write(
+                'CONTAINER ID   IMAGE          COMMAND                  CREATED        STATUS        PORTS                               NAMES\r\n' +
+                'a1b2c3d4e5f6   node:20-alpine "docker-entrypoint.s…"   3 days ago     Up 3 days     0.0.0.0:3000->3000/tcp              api-gateway\r\n' +
+                'f6e5d4c3b2a1   postgres:16    "docker-entrypoint.s…"   10 days ago    Up 10 days    0.0.0.0:5432->5432/tcp              prod-database\r\n'
+              );
               stream.exit(0);
               stream.end();
             } else if (cmd === 'whoami') {
