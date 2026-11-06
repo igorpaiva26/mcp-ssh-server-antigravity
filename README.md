@@ -1,6 +1,35 @@
 # 🚀 MCP SSH Server (Antigravity / VS Code / Claude)
 
+![NodeJS](https://img.shields.io/badge/Node.js-18%2B-green?logo=node.js)
+![MCP](https://img.shields.io/badge/Model_Context_Protocol-MCP-blue)
+![Security](https://img.shields.io/badge/Crypto_Vault-AES--256--GCM-red)
+![License](https://img.shields.io/badge/License-MIT-purple)
+
 Servidor MCP (Model Context Protocol) para automação remota via SSH e SFTP com foco em alta segurança, projetado para que o seu agente de IA faça **absolutamente tudo por você** através do chat.
+
+```mermaid
+flowchart LR
+    subgraph Client["🤖 Agentes de IA"]
+        AI["Antigravity / Claude / Cursor"]
+    end
+
+    subgraph MCP["🔐 Servidor MCP SSH"]
+        Vault["Cofre Criptografado<br/>(AES-256-GCM + PBKDF2)"]
+        Guard["Filtro de Segurança<br/>(Bloqueio de Comandos Destrutivos)"]
+        SSHClient["Cliente SSH2 / SFTP"]
+    end
+
+    subgraph Remote["☁️ Infraestrutura Remota"]
+        S1["Servidor Web (Nginx / Node)"]
+        S2["Servidor de Banco / App"]
+        S3["Instâncias Cloud / VPS"]
+    end
+
+    AI <-->|Model Context Protocol| MCP
+    Vault -.->|Chaves descriptografadas em RAM| SSHClient
+    Guard --> SSHClient
+    SSHClient <-->|Conexão Segura SSH / SFTP| Remote
+```
 
 ---
 
